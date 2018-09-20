@@ -8,14 +8,15 @@
 }
 
 .App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
+  background-color: #2e5fad;
+  /*height: 150px;*/
+  padding: 10px;
   color: white;
 }
 
 .App-title {
-  font-size: 1.5em;
+  font-size: 1.7em;
+  font-family: Garamond, Palatino, Times, serif;
 }
 
 .App-intro {
@@ -25,4 +26,36 @@
 @keyframes App-logo-spin {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+.book-list {
+  list-style-type: none;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+}
+
+.book {
+  width: 200px;
+  list-style-type: none;
+  margin: 30px;
+}
+
+.cover {
+    height: 200px;
+    width: auto;
+}
+
+.title {
+  text-align: left;
+  color: #2e5fad;
+  font-weight: bold;
+  padding-left: 15px;
+}
+
+.author {
+  text-align: left;
+  font-style: italic;
+  padding-left: 15px;
+
 }
