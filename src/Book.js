@@ -1,25 +1,21 @@
-import React, { Component } from 'react';
+import React from 'react';
+import ShelfChanger from './ShelfChanger';
 
-class Book extends Component {
+const Book = (props) => {
 
-	render() {
-		return (
-/*			<div>
-				<img>
-				<span className="Title"></span>
-				<span className="Author"></span>
-			</div>*/
-			<ul className="book-list">
-				{this.props.books.map((book) => (
-					<li className="book">
-						<img src={book.coverImage} className="cover"/>
-						<div className="title">{book.title}</div> 
-						<div className="author">{book.author}</div>
-					</li>
-				))}
-			</ul>
-		)
-	}
+	const { books, changeShelf } = props.book;
+
+	return (
+		<div className="book">
+			<img src={props.book.imageLinks.thumbnail} className="cover" alt="Cover of {props.book.title}"/>
+			<ShelfChanger
+                  books={ books }
+                  changeShelf={ changeShelf }
+            />
+			<div className="title">{props.book.title}</div>
+			<div className="subtitle">{props.book.subtitle}</div> 
+		</div>
+	);
 }
 
 export default Book;
