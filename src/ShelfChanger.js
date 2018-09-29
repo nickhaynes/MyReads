@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 class ShelfChanger extends Component {
-	props = this.props;
 
 	static PropTypes = {
 		book: PropTypes.object.isRequired,
@@ -11,7 +10,7 @@ class ShelfChanger extends Component {
 	}
 
 	state = {
-		currentShelf: this.props.book,
+		currentShelf: this.props.book.shelf,
 	}
 
 	switchShelf = (event) => {
@@ -26,7 +25,7 @@ class ShelfChanger extends Component {
 			<div className='shelf-changer'>
 				<select 
 					value={this.state.currentShelf}
-					onChange={this.switchShelf}
+					onChange={(event) => this.switchShelf(event)}
 				>
 					<option value="none" disabled>Move to...</option>
 					<option value="currentlyReading">Currently Reading</option>

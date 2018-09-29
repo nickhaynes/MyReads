@@ -4,7 +4,7 @@ import Book from './Book';
 
 const BookShelf = (props) => {
 
-	const { books, description, shelfNames } = props;
+	const { books, description, shelfNames, changeShelf } = props; 
 
 	return (
 		<div className="bookshelf-display">
@@ -20,6 +20,7 @@ const BookShelf = (props) => {
 								<Book 
 									book={book} 
 									shelfNames={shelfNames} 
+									changeShelf={changeShelf}
 								/>
 							</li>
 						))}

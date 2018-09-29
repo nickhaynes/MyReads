@@ -8,7 +8,7 @@ class SearchApp extends Component {
 
 	static PropTypes = {
 		shelfNames: PropTypes.array.isRequired,
-		changeShelfName: PropTypes.func.isRequired
+		changeShelf: PropTypes.func.isRequired
 	}
 
 	state = {
@@ -36,7 +36,7 @@ class SearchApp extends Component {
 
 	render() {
 		const { query, searchResults, books, searchError } = this.state;
-		const { shelfNames } = this.props;
+		const { shelfNames, changeShelf, switchShelf } = this.props;
 		return (
 			<div className="search-app">
 				<div className="search-bar">
@@ -66,6 +66,8 @@ class SearchApp extends Component {
 											books={ books }
 											shelfNames={ shelfNames } 
 											key={ book.id }
+											changeShelf={ changeShelf }
+											switchShelf={ switchShelf }
 										/>
 									</li>
 								))}
