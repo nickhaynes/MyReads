@@ -9,10 +9,6 @@ class ShelfChanger extends Component {
 		changeShelf: PropTypes.func.isRequired
 	}
 
-	state = {
-		currentShelf: this.props.book.shelf,
-	}
-
 	switchShelf = (event) => {
 		this.props.changeShelf(this.props.book, event.target.value);
 		this.setState({
@@ -24,14 +20,14 @@ class ShelfChanger extends Component {
 		return (
 			<div className='shelf-changer'>
 				<select 
-					value={this.state.currentShelf}
+					value={this.props.book.shelf}
 					onChange={(event) => this.switchShelf(event)}
 				>
 					<option value="none" disabled>Move to...</option>
+					<option value="none">None</option>
 					<option value="currentlyReading">Currently Reading</option>
 					<option value="wantToRead">Want to Read</option>
 					<option value="read">Have Read</option>
-					<option value="none">None</option>
 				</select>
 			</div>
 		)

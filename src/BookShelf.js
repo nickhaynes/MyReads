@@ -21,6 +21,7 @@ const BookShelf = (props) => {
 									book={book} 
 									shelfNames={shelfNames} 
 									changeShelf={changeShelf}
+									key={ book.id }
 								/>
 							</li>
 						))}
@@ -33,7 +34,7 @@ const BookShelf = (props) => {
 
 BookShelf.propTypes = {
 	books: PropTypes.array.isRequired,
-	shelfNames: PropTypes.string.isRequired,
+	shelfNames: PropTypes.array.isRequired,
 	changeShelf: PropTypes.func.isRequired,
 }
 	

@@ -34,7 +34,7 @@ class App extends Component {
       this.setState({ books });
     })
     .catch((e) => {
-      console.log("Error during componentDidMount: ", e);
+      console.log("componentDidMount error: ", e);
     });
   }
 
@@ -55,16 +55,16 @@ class App extends Component {
       <div className="App">
         <Route exact path='/' render={() => (
           <MainApp 
-            books={books} 
-            shelfNames={shelfNames} 
+            books={ books } 
+            shelfNames={ shelfNames } 
             changeShelf={ this.changeShelf }
           />
         )}/>
         <Route exact path='/search' render={() => (
           <SearchApp 
-            myBooks={books} 
-            shelfNames={shelfNames} 
-            changeShelf={this.changeShelf}
+            myBooks={ books } 
+            shelfNames={ shelfNames } 
+            changeShelf={ this.changeShelf }
           />
         )}/>
         

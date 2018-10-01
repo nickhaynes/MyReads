@@ -1,41 +1,71 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import * as BooksAPI from './utils/BooksAPI';
-import Book from './Book';
+import BookShelf from './BookShelf';
 import PropTypes from 'prop-types';
+import debounce from 'lodash.debounce';
+import './App.css';
 
 class SearchApp extends Component {
 
 	static PropTypes = {
+		myBooks: PropTypes.array.isRequired,
 		shelfNames: PropTypes.array.isRequired,
 		changeShelf: PropTypes.func.isRequired
 	}
 
-	state = {
-		query: '',
-		searchResults: [],
-		books: [],
-		searchError: false
+	constructor(props) {
+		super(props);
+
+		this.state = {
+			searchText: '',
+			books: []
+		};
+
+		this.handleChange = this.handleChange.bind(this);
+		this.emitChangeDebounce = debounce(this.findBooks, 100);
 	}
 
-	findBooks = (event) => {
-		const query = event.target.value.trim()
-		this.setState({ query: query })
+	handleChange(evt) {
+		this.emitChangeDebounce(evt.target.value);
+	}
 
-		if (query) {
-			BooksAPI.search(query, 20).then((books) => {
-				books.length > 0 ? this.setState({searchResults: books, searchError: false }) : this.setState({ searchResults: [], searchError: true })
-				console.log(books);
-				console.log(query);
-				console.log(this.state.searchError);
+	findBooks = (searchTerms) => {
+		this.setState({ searchText: searchTerms });
+
+		if (searchTerms) {
+			BooksAPI.search(searchTerms.trim())
+			.then((books) => {
+				if (books.length > 0) {
+					const updatedBooks = this.updateShelf(books); 
+					this.setState({ books: updatedBooks });
+				} else {
+					this.setState({ books: [] });
+				}
 			})
-		} else
-			this.setState({ searchResults: [], searchError: false })
+			.catch((e) => 
+				console.log('Error during search: ', e));
+		} else {
+			this.setState({ books: [] });
+		}
+	}
+
+	updateShelf = (books) => {
+		return books.map(book => {
+			let updatedBook = book;
+			const bookIndex = this.props.myBooks.findIndex((myBook) => myBook.id === book.id);
+			if (bookIndex !== -1) {
+				updatedBook.shelf = this.props.myBooks[bookIndex].shelf;
+			} else {
+				updatedBook.shelf = 'none';
+			}
+			return updatedBook;
+		});
 	}
 
 
 	render() {
-		const { query, searchResults, books, searchError } = this.state;
+		const { searchText, books } = this.state;
 		const { shelfNames, changeShelf, switchShelf } = this.props;
 		return (
 			<div className="search-app">
@@ -47,40 +77,31 @@ class SearchApp extends Component {
 						<input 
 							type="text" 
 							placeholder="Search by title or author"
-							value={ query }
-							onChange={ this.findBooks }
+							value={ searchText }
+							onChange={ this.handleChange }
 						/>
 					</div>
 				</div>
 				<div className="search-results">
-					{ searchResults.length > 0 && (
+					{ searchText.length > 0 && (
 						<div>
-							<div className="results-header">
-								<h3>Search returned { searchResults.length } books</h3>
-							</div>
 							<ol className="book-list">
-								{searchResults.map((book) => (
-									<li>
-										<Book 
-											book={ book } 
-											books={ books }
-											shelfNames={ shelfNames } 
-											key={ book.id }
-											changeShelf={ changeShelf }
-											switchShelf={ switchShelf }
+								{shelfNames.map((shelf) => {
+									const shelfDesc = shelf.id === 'none' ? 'New books...' : shelf.description;
+									return (
+										<BookShelf
+											description={shelfDesc}
+											books={books.filter(book => book.shelf === shelf.id)}
+											changeShelf={changeShelf}
+											switchShelf={switchShelf}
+											shelfNames={shelfNames}
+											key={shelf.id}
 										/>
-									</li>
-								))}
+									);
+								})}
 							</ol>
 						</div>
-					)}
-					{ searchError && (
-						<div>
-							<div className=''>
-								<h3>Search returned no books.  Please try again.</h3>
-							</div>
-						</div>
-					)}
+					)}				
 				</div>
 			</div>
 		)

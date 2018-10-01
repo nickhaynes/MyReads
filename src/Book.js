@@ -4,16 +4,20 @@ import PropTypes from 'prop-types';
 
 const Book = (props) => {
 
+	const {imageLinks, title, subtitle } = props.book;
+
 	return (
 		<div className="book">
-			<img src={props.book.imageLinks.thumbnail} className="cover" alt={props.book.title}/>
+			{ imageLinks !== undefined && (
+				<img src={imageLinks.thumbnail} className="cover" alt={title}/>
+			)}
 			<ShelfChanger
 				book = { props.book }
                 books={ props.books }
                 changeShelf={ props.changeShelf }
             />
-			<div className="title">{props.book.title}</div>
-			<div className="subtitle">{props.book.subtitle}</div> 
+			<div className="title">{title}</div>
+			<div className="subtitle">{subtitle}</div> 
 		</div>
 	);
 }
